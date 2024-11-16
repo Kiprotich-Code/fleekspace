@@ -16,7 +16,7 @@ class UserRegisterationAPIView(GenericAPIView):
     An endpoint for the client to create a new User.
     """
 
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny]
     serializer_class = serializers.UserRegisterationSerializer
 
     def post(self, request, *args, **kwargs):
@@ -33,7 +33,7 @@ class UserLoginAPIView(GenericAPIView):
     An endpoint to authenticate existing users using their email and password.
     """
 
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny]
     serializer_class = serializers.UserLoginSerializer
 
     def post(self, request, *args, **kwargs):
