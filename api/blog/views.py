@@ -45,10 +45,8 @@ class PostViewSet(viewsets.ModelViewSet):
             self.permission_classes = (permissions.IsAuthenticated,)
         elif self.action in ("update", "partial_update", "destroy"):
             self.permission_classes = (IsAuthorOrReadOnly,)
-        elif self.action == 'retrieve':
-            self.permission_classes = (permissions.AllowAny,)
         else:
-            self.permission_classes = (permissions.IsAuthenticated,)
+            self.permission_classes = (permissions.AllowAny,)
 
         return super().get_permissions()
 
