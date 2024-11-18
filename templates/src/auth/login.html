@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Fleekspace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="w-full max-w-md p-6 space-y-8 bg-white rounded-lg shadow-lg">
+        <h2 class="text-2xl font-extrabold text-center text-gray-900">Sign In</h2>
+        <p class="mt-2 text-center text-sm text-gray-600">Welcome back! Please sign in to your account.</p>
+
+        <form id="login-form" class="mt-8 space-y-6" action="#" method="POST">
+            <div class="rounded-md shadow-sm -space-y-px">
+                <!-- Email input -->
+                <div>
+                    <label for="email" class="sr-only">Email address</label>
+                    <input id="email" name="email" type="email" autocomplete="email" required
+                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        placeholder="Email address">
+                </div>
+
+                <!-- Password input -->
+                <div class="mt-4">
+                    <label for="password" class="sr-only">Password</label>
+                    <input id="password" name="password" type="password" autocomplete="current-password" required
+                        class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                        placeholder="Password">
+                </div>
+            </div>
+
+            <!-- Error message (optional) -->
+            <div class="text-red-500 text-sm" id="error-message" style="display:none;">
+                Invalid email or password. Please try again.
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+                <button type="submit"
+                    class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <!-- Heroicon name: mini/lock-closed -->
+                        <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M10 2a3 3 0 013 3v4h4a3 3 0 013 3v7a3 3 0 01-3 3H3a3 3 0 01-3-3v-7a3 3 0 013-3h4V5a3 3 0 013-3zm1 7V5a1 1 0 00-2 0v4h2z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    Sign In
+                </button>
+            </div>
+        </form>
+
+        <!-- Forgot Password Link -->
+        <div class="mt-2 text-center">
+            <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500">
+                Forgot your password?
+            </a>
+        </div>
+
+        <!-- Register Link -->
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">Don't have an account? <a href="/register"
+                    class="font-medium text-indigo-600 hover:text-indigo-500">Sign up</a></p>
+        </div>
+    </div>
+
+    <!-- Modal for Success/Error Messages -->
+    <div id="modal" class="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 hidden">
+        <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+            <h3 id="modal-title" class="text-2xl font-semibold mb-4">Login Successful</h3>
+            <p id="modal-message" class="text-lg text-gray-700 mb-4">You have logged in successfully!</p>
+            <div class="flex justify-end">
+                <button id="close-modal" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('login-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Clear any previous error messages
+            document.getElementById('error-message').style.display = 'none';
+
+            // Basic form validation
+            if (!email || !password) {
+                document.getElementById('error-message').innerText = 'Both fields are required.';
+                document.getElementById('error-message').style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: email,
+                        password: password
+                    })
+                });
+
+                if (response.ok) {
+                    // Handle successful login (store token, redirect, etc.)
+                    const data = await response.json();
+                    console.log('Login successful:', data);
+
+                    // Show success modal
+                    showModal("Login Successful", "You have logged in successfully!");
+
+                    // Redirect to another page after a short delay (if desired)
+                    setTimeout(() => {
+                        window.location.href = '../author/dashboard.html';  // Change this URL as needed
+                    }, 1500);
+                } else {
+                    // Handle errors (e.g., invalid credentials)
+                    const data = await response.json();
+                    console.error('Login failed:', data);
+                    showModal("Login Failed", data.detail || 'Invalid email or password');
+                }
+            } catch (error) {
+                console.error('Error logging in:', error);
+                showModal("Error", 'Something went wrong. Please try again later.');
+            }
+        });
+
+        // Function to show the modal
+        function showModal(title, message) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-message').innerText = message;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        // Close the modal when the close button is clicked
+        document.getElementById('close-modal').addEventListener('click', function() {
+            document.getElementById('modal').classList.add('hidden');
+        });
+    </script>
+
+</body>
+
+</html>

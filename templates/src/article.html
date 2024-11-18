@@ -8,61 +8,70 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+
     <!-- Navigation -->
     <nav class="p-4 bg-gray-900 text-white">
         <ul class="flex justify-center space-x-8 font-medium">
-            <li><a href="/" class="hover:text-gray-300">Home</a></li>
+            <li><a href="index.html" class="hover:text-gray-300">Home</a></li>
             <li><a href="#" class="hover:text-gray-300">Categories</a></li>
             <li><a href="#" class="hover:text-gray-300">Sponsor</a></li>
         </ul>
     </nav>
 
-    <!-- Article Detail -->
-    <main class="container mx-auto p-6" id="article-detail">
-        <div class="p-6 bg-white border rounded shadow">
-            <!-- Article content will load dynamically -->
-        </div>
+    <!-- Article Detail Section -->
+    <main class="container mx-auto p-6">
+        <h2 class="text-3xl font-bold text-center mb-6" id="article-title">Loading...</h2>
+        <p class="text-lg text-center mb-4" id="article-author"></p>
+        <p class="text-gray-600 mb-4" id="article-date"></p>
+        <div id="article-body" class="text-gray-800"></div>
     </main>
 
-    <footer class="bg-gray-900 text-white text-center py-6">
-        <p class="text-sm mt-2">© 2024 X. All rights reserved.</p>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white text-center py-6 sticky top-[100vh]">
+        <p class="text-lg">Thanks for reading!</p>
+        <p class="text-sm mt-2">© 2024 Fleekspace. All rights reserved.</p>
     </footer>
 
     <script>
-        const API_URL = 'http://127.0.0.1:8000/blog/';
-        const articleDetail = document.getElementById('article-detail');
+        // Function to get query parameters from the URL
+        function getQueryParam(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
 
-        // Extract article ID from URL
-        const articleId = window.location.pathname.split('/').filter(Boolean).pop();
+        // Fetch and display the article based on the article ID
+        async function fetchArticle() {
+            const articleId = getQueryParam('id');
+            if (!articleId) {
+                console.error('No article ID provided');
+                return;
+            }
 
-        // Fetch and display article detail
-        async function fetchArticleDetail() {
             try {
-                const response = await fetch(`${API_URL}${articleId}/`);
+                const response = await fetch(`http://127.0.0.1:8000/blog/${articleId}/`);
                 if (!response.ok) {
-                    throw new Error('Failed to fetch article details');
+                    throw new Error('Article not found');
                 }
+
                 const article = await response.json();
-                renderArticleDetail(article);
+                console.log('Fetched article:', article);
+
+                // Display article details
+                document.getElementById('article-title').textContent = article.title;
+                document.getElementById('article-author').textContent = `By ${article.author}`;
+                document.getElementById('article-date').textContent = new Date(article.created_at).toLocaleDateString();
+                document.getElementById('article-body').textContent = article.body;
             } catch (error) {
-                console.error('Error:', error);
-                articleDetail.innerHTML = '<p class="text-red-500">Unable to load the article details.</p>';
+                console.error('Error fetching article:', error);
+                document.getElementById('article-title').textContent = 'Article not found';
             }
         }
 
-        function renderArticleDetail(article) {
-            articleDetail.innerHTML = `
-                <h1 class="text-4xl font-bold mb-4">${article.title}</h1>
-                <p class="text-gray-600 mb-4">By ${article.author} | ${new Date(article.created_at).toLocaleDateString()}</p>
-                <p>${article.body}</p>
-                <a href="/" class="mt-6 inline-block bg-blue-500 text-white px-4 py-2 rounded">Back to Articles</a>
-            `;
-        }
-
-        // Load article detail on page load
-        fetchArticleDetail();
+        // Load the article when the page loads
+        window.onload = fetchArticle;
     </script>
+
 </body>
 
 </html>
