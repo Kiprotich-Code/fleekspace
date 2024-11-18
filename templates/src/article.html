@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Article Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 text-gray-800">
+    <!-- Navigation -->
+    <nav class="p-4 bg-gray-900 text-white">
+        <ul class="flex justify-center space-x-8 font-medium">
+            <li><a href="/" class="hover:text-gray-300">Home</a></li>
+            <li><a href="#" class="hover:text-gray-300">Categories</a></li>
+            <li><a href="#" class="hover:text-gray-300">Sponsor</a></li>
+        </ul>
+    </nav>
+
+    <!-- Article Detail -->
+    <main class="container mx-auto p-6" id="article-detail">
+        <div class="p-6 bg-white border rounded shadow">
+            <!-- Article content will load dynamically -->
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white text-center py-6">
+        <p class="text-sm mt-2">© 2024 X. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8000/blog/';
+        const articleDetail = document.getElementById('article-detail');
+
+        // Extract article ID from URL
+        const articleId = window.location.pathname.split('/').filter(Boolean).pop();
+
+        // Fetch and display article detail
+        async function fetchArticleDetail() {
+            try {
+                const response = await fetch(`${API_URL}${articleId}/`);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch article details');
+                }
+                const article = await response.json();
+                renderArticleDetail(article);
+            } catch (error) {
+                console.error('Error:', error);
+                articleDetail.innerHTML = '<p class="text-red-500">Unable to load the article details.</p>';
+            }
+        }
+
+        function renderArticleDetail(article) {
+            articleDetail.innerHTML = `
+                <h1 class="text-4xl font-bold mb-4">${article.title}</h1>
+                <p class="text-gray-600 mb-4">By ${article.author} | ${new Date(article.created_at).toLocaleDateString()}</p>
+                <p>${article.body}</p>
+                <a href="/" class="mt-6 inline-block bg-blue-500 text-white px-4 py-2 rounded">Back to Articles</a>
+            `;
+        }
+
+        // Load article detail on page load
+        fetchArticleDetail();
+    </script>
+</body>
+
+</html>

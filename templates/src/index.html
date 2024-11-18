@@ -86,8 +86,6 @@
             }
         }
 
-
-
         function renderArticles(articles) {
             if (!articles || articles.length === 0) {
                 console.log('No new articles to display');
@@ -103,7 +101,7 @@
             <h2 class="font-bold text-xl mb-2">${article.title}</h2>
             <p class="text-gray-600 mb-4">By ${article.author} | ${new Date(article.created_at).toLocaleDateString()}</p>
             <p>${article.body.substring(0, 100)}...</p>
-            <a href="/article/${article.id}" class="text-blue-500 underline">Read More</a>
+            <a href="/blog/${article.id}" class="text-blue-500 underline">Read More</a>
         `;
                 articlesContainer.appendChild(articleElement);
             });

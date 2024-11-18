@@ -31,8 +31,6 @@ class PostViewSet(viewsets.ModelViewSet):
 
     queryset = Post.objects.all()
 
-    # In order to use different serializers for different 
-    # actions, you can override the 
     # get_serializer_class(self) method
     def get_serializer_class(self):
         if self.action in ("create", "update", "partial_update", "destroy"):
@@ -47,8 +45,10 @@ class PostViewSet(viewsets.ModelViewSet):
             self.permission_classes = (permissions.IsAuthenticated,)
         elif self.action in ("update", "partial_update", "destroy"):
             self.permission_classes = (IsAuthorOrReadOnly,)
-        else:
+        elif self.action == 'retrieve':
             self.permission_classes = (permissions.AllowAny,)
+        else:
+            self.permission_classes = (permissions.IsAuthenticated,)
 
         return super().get_permissions()
 
