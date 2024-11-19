@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Fleekspace</title>
+    <title>Dashboard | Fleekspace</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -13,50 +13,19 @@
     <div class="flex h-screen">
 
         <!-- Sidebar -->
-        <div class="w-64 bg-blue-800 text-white flex-none p-6">
+        <div class="w-64 bg-indigo-800 text-white flex-none p-6">
             <h2 class="mb-2 text-center">Fleekspace | User Dashboard</h2>
             <hr>
             <div class="mb-3"></div>
             <ul class="space-y-4">
                 <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-blue-700 rounded-md">
-                        <svg class="h-5 w-5 inline-block mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path d="M3 2a2 2 0 012-2h10a2 2 0 012 2v16a2 2 0 01-2 2H5a2 2 0 01-2-2V2z" />
-                        </svg>
+                    <a href="#" class="block px-4 py-2 hover:bg-indigo-700 rounded-md">
                         Dashboard
                     </a>
                 </li>
                 <li>
-                    <a href="#posts" class="block px-4 py-2 hover:bg-blue-700 rounded-md">
-                        <svg class="h-5 w-5 inline-block mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M8 5v10a1 1 0 001 1h2a1 1 0 001-1V5a1 1 0 00-1-1H9a1 1 0 00-1 1z" clip-rule="evenodd" />
-                        </svg>
+                    <a href="./posts.html" class="block px-4 py-2 hover:bg-indigo-700 rounded-md">
                         Posts
-                    </a>
-                </li>
-                <li>
-                    <a href="#categories" class="block px-4 py-2 hover:bg-blue-700 rounded-md">
-                        <svg class="h-5 w-5 inline-block mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M7 3a2 2 0 014 0v4a2 2 0 01-4 0V3z" clip-rule="evenodd" />
-                        </svg>
-                        Categories
-                    </a>
-                </li>
-                <li>
-                    <a href="#users" class="block px-4 py-2 hover:bg-blue-700 rounded-md">
-                        <svg class="h-5 w-5 inline-block mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path d="M10 10a3 3 0 100-6 3 3 0 000 6z" />
-                            <path fill-rule="evenodd" d="M4 16a8 8 0 1116 0H4z" clip-rule="evenodd" />
-                        </svg>
-                        Users
-                    </a>
-                </li>
-                <li>
-                    <a href="#" class="block px-4 py-2 hover:bg-blue-700 rounded-md">
-                        <svg class="h-5 w-5 inline-block mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd" d="M4 5h12v10H4V5z" clip-rule="evenodd" />
-                        </svg>
-                        Settings
                     </a>
                 </li>
             </ul>
@@ -68,7 +37,8 @@
             <header class="flex items-center justify-between mb-6">
                 <h1 class="font-semibold text-gray-800">Fleekspace</h1>
                 <div class="flex items-center space-x-4">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Logout</button>
+                    <button class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
+                        id="logoutButton">Logout</button>
                 </div>
             </header>
 
@@ -100,8 +70,10 @@
                                 <p class="text-sm text-gray-600">Created by Admin on 12th Jan, 2024</p>
                             </div>
                             <div>
-                                <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Edit</button>
-                                <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Delete</button>
+                                <button
+                                    class="bg-indigoue-600 text-white px-4 py-2 rounded-md hover:bg-indigoue-700">Edit</button>
+                                <button
+                                    class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Delete</button>
                             </div>
                         </li>
                         <li class="flex justify-between items-center">
@@ -110,8 +82,10 @@
                                 <p class="text-sm text-gray-600">Created by Admin on 13th Jan, 2024</p>
                             </div>
                             <div>
-                                <button class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Edit</button>
-                                <button class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Delete</button>
+                                <button
+                                    class="bg-indigoue-600 text-white px-4 py-2 rounded-md hover:bg-indigoue-700">Edit</button>
+                                <button
+                                    class="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Delete</button>
                             </div>
                         </li>
                         <!-- More posts will go here -->
@@ -121,6 +95,23 @@
 
         </div>
     </div>
+
+    <script>
+        // Get the logout button by its ID
+        const logoutButton = document.getElementById('logoutButton');
+
+        // Add a click event listener to the logout button
+        logoutButton.addEventListener('click', () => {
+            // Remove the token from localStorage (or cookies if you're using them)
+            localStorage.removeItem('authToken');  // Assuming the token is stored in localStorage
+
+            // Optionally, you can also clear any session-related data:
+            // sessionStorage.clear();
+
+            // Redirect the user to the login page
+            window.location.href = '../index.html';  // Or whatever your login page URL is
+        });
+    </script>
 
 </body>
 

@@ -44,8 +44,9 @@
                     class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                     <span class="absolute left-0 inset-y-0 flex items-center pl-3">
                         <!-- Heroicon name: mini/lock-closed -->
-                        <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <svg class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                            aria-hidden="true">
                             <path fill-rule="evenodd"
                                 d="M10 2a3 3 0 013 3v4h4a3 3 0 013 3v7a3 3 0 01-3 3H3a3 3 0 01-3-3v-7a3 3 0 013-3h4V5a3 3 0 013-3zm1 7V5a1 1 0 00-2 0v4h2z"
                                 clip-rule="evenodd" />
@@ -85,22 +86,22 @@
 
     <script>
         // Handle form submission
-        document.getElementById('login-form').addEventListener('submit', async function(e) {
+        document.getElementById('login-form').addEventListener('submit', async function (e) {
             e.preventDefault();
-
+    
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-
+    
             // Clear any previous error messages
             document.getElementById('error-message').style.display = 'none';
-
+    
             // Basic form validation
             if (!email || !password) {
                 document.getElementById('error-message').innerText = 'Both fields are required.';
                 document.getElementById('error-message').style.display = 'block';
                 return;
             }
-
+    
             try {
                 const response = await fetch('http://127.0.0.1:8000/login/', {
                     method: 'POST',
@@ -112,19 +113,28 @@
                         password: password
                     })
                 });
-
+    
                 if (response.ok) {
                     // Handle successful login (store token, redirect, etc.)
                     const data = await response.json();
                     console.log('Login successful:', data);
-
-                    // Show success modal
-                    showModal("Login Successful", "You have logged in successfully!");
-
-                    // Redirect to another page after a short delay (if desired)
-                    setTimeout(() => {
+    
+                    // Check if the 'tokens' object exists
+                    if (data.tokens && data.tokens.access) {
+                        // Store the access token in localStorage (you can also store the refresh token if needed)
+                        localStorage.setItem('authToken', data.tokens.access);
+                        
+                        // Show success modal
+                        setTimeout(() => {
+                            showModal("Login Successful", "You have logged in successfully!");
+                        }, 2000);
+    
+                        // Redirect to the dashboard
                         window.location.href = '../author/dashboard.html';  // Change this URL as needed
-                    }, 1500);
+                    } else {
+                        console.error('No access token received:', data);
+                        showModal("Login Failed", 'No access token received from the server.');
+                    }
                 } else {
                     // Handle errors (e.g., invalid credentials)
                     const data = await response.json();
@@ -136,19 +146,20 @@
                 showModal("Error", 'Something went wrong. Please try again later.');
             }
         });
-
+    
         // Function to show the modal
         function showModal(title, message) {
             document.getElementById('modal-title').innerText = title;
             document.getElementById('modal-message').innerText = message;
             document.getElementById('modal').classList.remove('hidden');
         }
-
+    
         // Close the modal when the close button is clicked
-        document.getElementById('close-modal').addEventListener('click', function() {
+        document.getElementById('close-modal').addEventListener('click', function () {
             document.getElementById('modal').classList.add('hidden');
         });
     </script>
+    
 
 </body>
 
