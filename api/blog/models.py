@@ -15,6 +15,11 @@ class Category(models.Model):
         return self.name
 
 class Post(models.Model):
+    CHOICES = [
+        ('Draft', 'draft'),
+        ('Final', 'final'),
+    ]
+
     title = models.CharField(_("Post title"), max_length=250)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -27,6 +32,7 @@ class Post(models.Model):
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="post_likes", blank=True
     )
+    status = models.CharField(max_length=10, choices=CHOICES, default='draft')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
