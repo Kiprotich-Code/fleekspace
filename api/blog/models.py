@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from tinymce.models import HTMLField
 
 # Create Your Models Here 
 class Category(models.Model):
@@ -22,7 +23,7 @@ class Post(models.Model):
         on_delete=models.SET_NULL,
     )
     categories = models.ManyToManyField(Category, related_name="posts_list", blank=True)
-    body = models.TextField(_("Post body"))
+    body = HTMLField(_("Post body"))
     likes = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="post_likes", blank=True
     )

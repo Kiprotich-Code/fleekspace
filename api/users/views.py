@@ -11,7 +11,7 @@ from .models import Profile
 User = get_user_model()
 
 # create your views here 
-class UserRegisterationAPIView(GenericAPIView):
+class UserRegisterAPIView(GenericAPIView):
     """
     An endpoint for the client to create a new User.
     """

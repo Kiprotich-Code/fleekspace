@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'users',
     'blog',
+    'tinymce',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +75,7 @@ WSGI_APPLICATION = 'api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'db.sqlite3', 
     }
 }
 
@@ -170,3 +171,16 @@ CORS_ALLOW_HEADERS = [
     'authorization',
     # add any other headers that might be required
 ]
+
+
+TINYMCE_DEFAULT_CONFIG = {
+    "height": 500,
+    "width": "100%",
+    "menubar": "file edit view insert format tools table help",
+    "plugins": "advlist autolink lists link image charmap print preview anchor "
+               "searchreplace visualblocks code fullscreen insertdatetime media "
+               "table paste code help wordcount",
+    "toolbar": "undo redo | formatselect | bold italic backcolor | "
+               "alignleft aligncenter alignright alignjustify | "
+               "bullist numlist outdent indent | removeformat | help",
+}
