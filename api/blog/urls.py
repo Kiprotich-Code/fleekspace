@@ -11,6 +11,6 @@ router.register(r"^(?P<post_id>\d+)/comment/$", CommentViewSet)
 router.register(r"", PostViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('api/v1/posts/', include(router.urls)),
     path('like/<int:pk>/', LikePostAPIView.as_view(), name='like-post'),
 ]

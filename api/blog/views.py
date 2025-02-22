@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import permissions, status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import action
 
 from blog.models import Category, Comment, Post
 from blog.serializers import (
@@ -49,6 +50,30 @@ class PostViewSet(viewsets.ModelViewSet):
             self.permission_classes = (permissions.AllowAny,)
 
         return super().get_permissions()
+
+
+    @action(detail=False, methods=["get"], permission_classes=[permissions.IsAuthenticated])
+    def my_posts(self, request):
+        """
+        Custom action to fetch posts belonging to the logged-in user.
+        """
+        if not request.user.is_authenticated:
+            return Response(
+                {"detail": "Authentication credentials were not provided."},
+                status=status.HTTP_401_UNAUTHORIZED,
+            )
+
+        posts = Post.objects.filter(author=request.user)
+        serializer = self.get_serializer(posts, many=True)
+        return Response(serializer.data)
+    
+
+    def perform_create(self, serializer):
+        """
+        Automatically set the author to the currently logged in user when creating posts.
+        """
+        serializer.save(author=self.request.user)
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     """

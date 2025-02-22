@@ -15,7 +15,8 @@ class PostReadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = "__all__"
+        fields = '__all__'
+
 
     def get_categories(self, obj):
         categories = list(
@@ -31,6 +32,11 @@ class PostReadSerializer(serializers.ModelSerializer):
 
 class PostWriteSerializer(serializers.ModelSerializer):
     author = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    categories = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        many=True,  # Allow multiple categories
+        required=False,  # Optional field
+    )
 
     class Meta:
         model = Post
