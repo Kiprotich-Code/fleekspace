@@ -6,4 +6,5 @@ urlpatterns = [
     path("tinymce/", include("tinymce.urls")),
     path("users/", include("users.urls", namespace="users")),
     path("blog/", include("blog.urls", namespace="blog")),
+    path("api/", include("applications.urls")),
 ]
